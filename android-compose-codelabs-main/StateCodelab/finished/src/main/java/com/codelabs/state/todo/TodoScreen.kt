@@ -137,13 +137,13 @@ fun TodoItemInlineEditor(
     onEditItemChange: (TodoItem) -> Unit,
     onEditDone: () -> Unit,
     onRemoveItem: () -> Unit
-) {
-    TodoItemInput(
+) = TodoItemInput(
         text = item.task,
         onTextChange = { onEditItemChange(item.copy(task = it)) },
         icon = item.icon,
         onIconChange = { onEditItemChange(item.copy(icon = it)) },
         submit = onEditDone,
+        iconsVisible = true,
         buttonSlot = {
             Row {
                 val shrinkButtons = Modifier.widthIn(20.dp)
@@ -162,44 +162,9 @@ fun TodoItemInlineEditor(
                     )
                 }
             }
-        },
-        iconsVisible = true
-    )
-}
-
-/**
- * Stateful composable to allow entry of *new* [TodoItem].
- *
- * This composable will display a button with [buttonText].
- *
- * @param onItemComplete (event) notify the caller that the user has completed entry of an item
- * @param buttonText text to display on the button
- */
-@Composable
-fun TodoItemEntryInput(onItemComplete: (TodoItem) -> Unit, buttonText: String = "Add") {
-    onCommit(Unit) {}
-    val (text, onTextChange) = savedInstanceState { "" }
-    val (icon, onIconChange) = remember { mutableStateOf(TodoIcon.Default) }
-
-    val submit = {
-        if (text.isNotBlank()) {
-            onItemComplete(TodoItem(text, icon))
-            onTextChange("")
-            onIconChange(TodoIcon.Default)
         }
-    }
+    )
 
-    TodoItemInput(
-        text = text,
-        onTextChange = onTextChange,
-        icon = icon,
-        onIconChange = onIconChange,
-        submit = submit,
-        iconsVisible = text.isNotBlank()
-    ) {
-        TodoEditButton(onClick = submit, text = buttonText, enabled = text.isNotBlank())
-    }
-}
 
 /**
  * Stateless input composable for editing [TodoItem].
@@ -233,10 +198,12 @@ fun TodoItemInput(
             TodoInputText(
                 text = text,
                 onTextChange = onTextChange,
-                onImeAction = submit,
-                modifier = Modifier.weight(1f)
+                //onImeAction = submit,
+                modifier = Modifier.weight(1f).padding(end=8.dp),
+                submit
             )
             Spacer(modifier = Modifier.width(8.dp))
+            // to align whatever in the slot put them in the box
             Box(Modifier.align(Alignment.CenterVertically)) { buttonSlot() }
         }
         if (iconsVisible) {
@@ -248,6 +215,47 @@ fun TodoItemInput(
         } else {
             Spacer(Modifier.height(16.dp))
         }
+    }
+}
+
+/**
+ * Stateful composable to allow entry of *new* [TodoItem].
+ *
+ * This composable will display a button with [buttonText].
+ *
+ * @param onItemComplete (event) notify the caller that the user has completed entry of an item
+ * @param buttonText text to display on the button
+ */
+@Composable
+fun TodoItemEntryInput(onItemComplete: (TodoItem) -> Unit) {
+//    onCommit(Unit) {}
+//    val (text, onTextChange) = savedInstanceState { "" }
+//    val (icon, onIconChange) = remember { mutableStateOf(TodoIcon.Default) }
+
+    val (text,setText) = remember { mutableStateOf("") }
+    val (icon,setIcon) = remember { mutableStateOf(TodoIcon.Default) }
+    val iconsVisible = text.isNotBlank()
+
+    val submit = {
+//        if (text.isNotBlank()) {
+//            onItemComplete(TodoItem(text, icon))
+//            onTextChange("")
+//            onIconChange(TodoIcon.Default)
+//        }
+        onItemComplete(TodoItem(text,icon))
+        setIcon(TodoIcon.Default)
+        setText("")
+    }
+
+    TodoItemInput(
+            text = text,
+            onTextChange = setText,
+            icon = icon,
+            onIconChange = setIcon,
+            submit = submit,
+            iconsVisible = iconsVisible
+    ) {
+        TodoEditButton(onClick = submit, text = "Add", enabled = text.isNotBlank())
     }
 }
 

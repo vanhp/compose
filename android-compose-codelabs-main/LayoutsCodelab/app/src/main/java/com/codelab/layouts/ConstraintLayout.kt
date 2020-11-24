@@ -44,8 +44,9 @@ fun ConstraintLayoutContent() {
             Text("Button")
         }
 
-        Text("Text", Modifier.constrainAs(text) {
+        Text("Try test", Modifier.constrainAs(text) {
             top.linkTo(button.bottom, margin = 16.dp)
+            centerHorizontallyTo(parent)
         })
 
     }
@@ -101,7 +102,7 @@ fun ConstraintLayoutContentExample2() {
             Text("Button 1")
         }
 
-        Text("Text", Modifier.constrainAs(text) {
+        Text("Test barrier", Modifier.constrainAs(text) {
             top.linkTo(button1.bottom, margin = 16.dp)
             centerAround(button1.end)
         })
@@ -114,7 +115,7 @@ fun ConstraintLayoutContentExample2() {
                 start.linkTo(barrier)
             }
         ) {
-            Text("Button 2")
+            Text("Button 2 barrier")
         }
     }
 }
@@ -135,15 +136,16 @@ fun LargeConstraintLayout() {
     }
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ConstraintLayoutContentPreview() {
     LayoutsCodelabTheme {
         ConstraintLayoutContent()
     }
+    LargeConstraintLayout()
 }
 
-@Preview
+@Preview(showBackground = true)
 @Composable
 fun ConstraintLayoutContentExample2Preview() {
     LayoutsCodelabTheme {

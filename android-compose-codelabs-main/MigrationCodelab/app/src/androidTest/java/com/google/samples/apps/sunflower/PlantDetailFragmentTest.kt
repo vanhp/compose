@@ -20,6 +20,11 @@ import android.accessibilityservice.AccessibilityService
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.junit4.AndroidComposeTestRule
+import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithText
+
 import androidx.navigation.Navigation.findNavController
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
@@ -34,6 +39,7 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
+
 import com.google.samples.apps.sunflower.utilities.chooser
 import com.google.samples.apps.sunflower.utilities.testPlant
 import org.hamcrest.CoreMatchers.allOf
@@ -47,14 +53,14 @@ class PlantDetailFragmentTest {
 
     @Rule
     @JvmField
-    val activityTestRule = ActivityScenarioRule(GardenActivity::class.java)
-
+//    val activityTestRule = ActivityScenarioRule(GardenActivity::class.java)
+    val composeTestRule = AndroidComposeTestRule<GardenActivity>()
     // Note that keeping these references is only safe if the activity is not recreated.
     private lateinit var activity: ComponentActivity
 
     @Before
     fun jumpToPlantDetailFragment() {
-        activityTestRule.scenario.onActivity { gardenActivity ->
+        composeTestRule.activityRule.scenario.onActivity { gardenActivity ->
             activity = gardenActivity
 
             val bundle = Bundle().apply { putString("plantId", "malus-pumila") }
@@ -64,8 +70,9 @@ class PlantDetailFragmentTest {
 
     @Test
     fun testPlantName() {
-        onView(ViewMatchers.withText("Apple"))
-            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+//        onView(ViewMatchers.withText("Apple"))
+//            .check(ViewAssertions.matches(ViewMatchers.isDisplayed()))
+        composeTestRule.onNodeWithText("Apple").assertIsDisplayed()
     }
 
     @Test

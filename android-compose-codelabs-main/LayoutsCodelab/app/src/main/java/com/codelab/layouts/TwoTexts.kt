@@ -34,6 +34,19 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.codelab.layouts.ui.LayoutsCodelabTheme
+// One of the rules of Compose is that you should only measure your children once;
+// measuring children twice throws a runtime exception. However,
+// there are times when you need some information about your children before measuring them.
+
+// Intrinsics lets you query children before they're actually measured.
+// To a composable, you can ask for its intrinsicWidth or intrinsicHeight:
+// (min|max)IntrinsicWidth: Given this height, what's the minimum/maximum width
+// you can paint your content properly.
+// (min|max)IntrinsicHeight: Given this width, what's the minimum/maximum height
+// you can paint your content properly.
+
+//For example, if you ask the minIntrinsicHeight of a Text with infinite width,
+// it'll return the height of the Text as if the text was drawn in a single line.
 
 @ExperimentalLayout
 @Composable

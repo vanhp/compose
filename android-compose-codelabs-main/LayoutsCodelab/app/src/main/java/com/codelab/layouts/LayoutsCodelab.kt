@@ -40,6 +40,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -76,7 +77,7 @@ fun LayoutsCodelab() {
 @Composable
 fun BodyContent(modifier: Modifier = Modifier) {
     ScrollableRow(modifier = modifier
-        .background(color = Color.LightGray)
+        .background(color = Color.LightGray,shape = RectangleShape)
         .padding(16.dp)
         .size(200.dp),
         children = {
